@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
 import Login from "./Login";
+import Join from "./Join";
 import Nav from "./Nav";
 import Header from "./Header";
 import Main from "./Main";
+import Mypage from "./Mypage";
 import Footer from "./Footer";
 
 function App() {
@@ -17,6 +19,9 @@ function App() {
       <Nav {...auth} />
       <Header />
       <Route exact path="/" component={Main} />
+      <Route path="/login" component={Login} />
+      <Route path="/join" component={Join} />
+      <Route path="/mypage" component={Mypage} />
     </BrowserRouter>
   );
 }
