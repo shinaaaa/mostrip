@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { baseURL } from './../config';
+import "./../css/Login.css";
 
 export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
   const [loginState, setLoginState] = useState('init');
@@ -24,9 +25,9 @@ export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
     };
   };
   return (
-    <>
+    <div className='div-box'>
       {loginState === 'success' ? (<Redirect to="/" />) : null}
-      <form onSubmit={handleSubmit}>
+      <form className='form-row' onSubmit={handleSubmit}>
         {loginState === 'failed' ? '이메일 혹은 비밀번호를 추가해 주세요' : null}
         <div class="form-group">
           <label for="exampleInputEmail1">Email address</label>
@@ -39,6 +40,6 @@ export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
         <button type="submit" class="btn btn-primary">Login</button>
         <button type="button" class="btn btn-secondary" onClick={() => history.push('/Join')}>Join</button>
       </form>
-    </>
+    </div>
   )
 }

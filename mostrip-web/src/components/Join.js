@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axois from 'axios';
 import { Redirect } from 'react-router-dom';
 import { baseURL } from '../config';
+import "./../css/Join.css";
 
 export default function Join() {
     const [email, setEmail] = useState('');
@@ -36,12 +37,17 @@ export default function Join() {
         }
     };
     return (
-        <div>
+        <div className='div-box'>
             {joinResult && <Redirect to='/Login' />}
-            <form onSubmit={handleSubmit} >
+            <form className='form-row' onSubmit={handleSubmit} >
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="validatedCustomFile" required />
+                    <label class="custom-file-label" for="validatedCustomFile" data-browse="Image File">Choose file...</label>
+                    <div class="invalid-feedback">Example invalid custom file feedback</div>
+                </div>
                 <div class="form-group">
                     <label>Name</label>
-                    <input type="email" name='name' class="form-control" placeholder="Name" />
+                    <input type="text" name='name' class="form-control" placeholder="Name" />
                 </div>
                 <div class="form-group">
                     <label>Email address</label>
