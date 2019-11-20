@@ -31,20 +31,30 @@ export default function Nav({ isLoggedIn, setIsLoggedIn, setIsAdmin }) {
                 Home
               </Link>
             </li>
-            <li className="nav-item">
-              {isLoggedIn ? (
-                <a className="nav-link" onClick={logout}>
-                  Logout
+            {isLoggedIn ? (
+              <>
+                <li className="nav-item">
+                  <a className="nav-link" onClick={logout}>
+                    Logout
                 </a>
-              ) : (
-                <Link className="nav-link" to="/login">
-                  Login
-                </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/mypage">Mypage</Link>
+                </li>
+              </>
+            ) : (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/login"> Login</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/join">Join</Link>
+                  </li>
+                </>
               )}
-            </li>
           </ul>
         </div>
       </div>
-    </nav>
+    </nav >
   );
 }
