@@ -1,0 +1,8 @@
+.div-box {
+  display: flex;
+  justify-content: center;
+}
+.form-row {
+  display: flex;
+  flex-direction: column;
+}

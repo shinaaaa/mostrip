@@ -55,7 +55,11 @@
    | 좋아요                      | /api/like        | POST   | id                               | result(B)                                                    |
    | 좋아요취소                  | /api/like/cancel | DELETE | id                               | result(B)                                                    |
    | 글 상세                     | /api/post/:id    | GET    | id                               | id, title, date, author, tags[{id,name}], contents, comments[{author, date, contents,like}] |
+<<<<<<< HEAD
    | 글 쓰기                     | /api/post        | POST   | title, tags, contents, token     | result(B)                                                    |
+=======
+   | 글 쓰기                     | /api/post        | POST   | tags, contents, token,file     | result(B)                                                    |
+>>>>>>> upstream/master
    | 글 수정                     | /api/post/:id    | PATCH  | id, title, tags, contents, token | result(B)                                                    |
    | 글 삭제                     | /api/post/:id    | DELETE | id, token                        | result(B)                                                    |
    | 댓글 쓰기                   | /api/comment     | POST   | post-id, token, contents         | result(B)                                                    |
@@ -74,13 +78,20 @@
      - name1의 name
      - name2의 name
    - posts
+<<<<<<< HEAD
      - title
+=======
+>>>>>>> upstream/master
      - author
      - contents
      - date
      - comments[comment_id]
      - tags[tag_id]
      - like[users]
+<<<<<<< HEAD
+=======
+     - file
+>>>>>>> upstream/master
    - tags
      - name(unique)
      - posts[post_id]
