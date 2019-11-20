@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function Nav({ isLoggedIn, setIsLoggedIn, setIsAdmin }) {
+export default function Nav({ isLoggedIn, setIsLoggedIn }) {
   const logout = () => {
     //만료시간을 현재시간으로 변경해서 쿠키를 파괴함.
     document.cookie = `Authorization=;expires=${new Date().toUTCString()}`;
     setIsLoggedIn(false);
-    setIsAdmin(false);
   };
   useEffect(() => {
     setIsLoggedIn(document.cookie.includes("Authorization"));
