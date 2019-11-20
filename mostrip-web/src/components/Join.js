@@ -5,12 +5,15 @@ import { baseURL } from '../config';
 import "./../css/Join.css";
 
 export default function Join() {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [isEmailChecked, setIsEmailChecked] = useState('yet');
     const [isPasswordSame, setIsPasswordSame] = useState(false);
     const [joinResult, setJoinResult] = useState(false);
+    const [image, setImage] = useState(null)
+
     const checkEmail = async () => {
         const { data } = await axois.get(`${baseURL}/auth/email?email=${email}`);
         setIsEmailChecked(data.result);
@@ -25,11 +28,14 @@ export default function Join() {
             alert('모든 값을 입력해주세요');
             return;
         }
-        const { data } = await axois.post(`${baseURL}/auth/join`, {
-            name: e.target.name.value,
-            email,
-            password,
-        });
+
+        const formData = new FormData();
+        formData.append('file', image);
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('password', password);
+
+        const { data } = await axois.post(`${baseURL}/auth/join`, formData);
         if (data.result) {
             setJoinResult(true);
         } else {
@@ -40,37 +46,39 @@ export default function Join() {
         <div className='div-box'>
             {joinResult && <Redirect to='/Login' />}
             <form className='form-row' onSubmit={handleSubmit} >
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="validatedCustomFile" required />
-                    <label class="custom-file-label" for="validatedCustomFile" data-browse="Image File">Choose file...</label>
-                    <div class="invalid-feedback">Example invalid custom file feedback</div>
+                <div className="custom-file">
+                    <input type="file" name="file" className="custom-file-input" id="validatedCustomFile"
+                        onChange={e => { setImage(e.target.files[0]) }} required />
+                    <label className="custom-file-label" for="validatedCustomFile" data-browse="Image File">{image ? image.name : 'Choose file...'}</label>
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                     <label>Name</label>
-                    <input type="text" name='name' class="form-control" placeholder="Name" />
+                    <input type="text" name='name' className="form-control" placeholder="Name" value={name}
+                        onChange={e => { setName(e.target.value) }} />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                     <label>Email address</label>
-                    <input type="email" class="form-control" placeholder="Enter email" value={email} onChange={e => {
-                        setIsEmailChecked("yet");
-                        setEmail(e.target.value);
-                    }}
+                    <input type="email" className="form-control" placeholder="Enter email" value={email}
+                        onChange={e => {
+                            setIsEmailChecked("yet");
+                            setEmail(e.target.value);
+                        }}
                     />
-                    <button type="button" class="btn btn-primary" onClick={checkEmail}>Check</button>
+                    <button type="button" className="btn btn-primary" onClick={checkEmail}>Check</button>
                     {isEmailChecked === 'yet' ? 'Check for the availability of the email.' : isEmailChecked ? 'This email is available. Do you wish to use it?' : 'This email is already in use.'}
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                     <label>password</label>
-                    <input type="password" class="form-control" placeholder="Password" value={password}
+                    <input type="password" className="form-control" placeholder="Password" value={password}
                         onChange={e => {
                             setPassword(e.target.value);
                             setIsPasswordSame(e.target.value === password2);
                         }}
                     />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                     <label>confirm password</label>
-                    <input type="password" class="form-control" placeholder="Password" value={password2}
+                    <input type="password" className="form-control" placeholder="Password" value={password2}
                         onChange={e => {
                             setPassword2(e.target.value);
                             setIsPasswordSame(e.target.value === password);
@@ -78,7 +86,7 @@ export default function Join() {
                     />
                 </div>
                 <small>{isPasswordSame ? null : 'The passowrd does not match. Try again.'}</small>
-                <button type="submit" class="btn btn-primary">Join</button>
+                <button type="submit" className="btn btn-primary">Join</button>
             </form>
         </div >
     )
