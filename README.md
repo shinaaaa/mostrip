@@ -74,13 +74,13 @@
      - name1의 name
      - name2의 name
    - posts
-     - title
      - author
      - contents
      - date
      - comments[comment_id]
      - tags[tag_id]
      - like[users]
+     - file
    - tags
      - name(unique)
      - posts[post_id]
