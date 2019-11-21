@@ -6,6 +6,7 @@ const wrapper = require("../common/wrapper");
 router.get(
   "/",
   wrapper(async (req, res, next) => {
+    console.log(req.query.tag);
     const tags = await Tag.find();
     res.json({ tags });
     next();
@@ -34,8 +35,10 @@ router.get(
   "/:name",
   wrapper(async (req, res, next) => {
     const name = req.params.name;
+    console.log(name);
     const tag = await Tag.findOne({ name });
     if (tag) {
+      console.log(tag);
       res.json({ tag });
     } else {
       res.json({ error: "태그가 없습니다" });
