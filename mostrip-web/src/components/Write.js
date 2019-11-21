@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { baseURL } from "../common/config";
+import { baseURL } from "../config";
 
 export default function Write() {
   const [selectedFile, setSelectedFile] = useState("");
@@ -14,10 +14,12 @@ export default function Write() {
       const { data } = await axios.post(`${baseURL}/api/tag`, {
         name: tag
       });
-      setTags([...tags, data.tag]);
+      setTags([...tags, data.tag._id]);
       setTag("");
     } else {
-      setTags([...tags, res.data.tag]);
+      setTags([...tags, res.data.tag._id]);
+      console.log(res.data.tag._id);
+      console.log(tags);
       setTag("");
     }
   };
@@ -67,11 +69,11 @@ export default function Write() {
           className="btn btn-secondary"
           onClick={() => {
             const formData = new FormData();
-            formData.append("file", selectedFile);
+            formData.append("image", selectedFile);
             formData.append("contents", contents);
             formData.append("tags", tags);
 
-            return axios.post(`http://${baseURL}:3000/api/post`, formData);
+            return axios.post(`${baseURL}/api/post`, formData);
           }}
         >
           upload
