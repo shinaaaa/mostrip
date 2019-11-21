@@ -4,33 +4,50 @@ const auth = require("../common/auth")();
 const { Post, validatePost } = require("../models/post");
 const { Tag } = require("../models/tag");
 const wrapper = require("../common/wrapper"); // async await 함수를 사용하다보면 error가 발생하게 되는데 얘가 대신 모든 에러를 캐치함.
+const multer = require("multer");
+const moment = require("moment");
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "uploads"); // 파일이 저장되는 경로입니다.
+  },
+  filename: function(req, file, cb) {
+    cb(null, moment().format("YYYYMMDDHHmmss") + "_" + file.originalname); // 저장되는 파일명
+  }
+});
+
+const upload = multer({ storage: storage }).single("image");
 
 router.post(
   "/",
-  auth.authenticate(), // 인증에 관한 것.
+  upload,
+  //auth.authenticate(), // 인증에 관한 것.
   wrapper(async (req, res, next) => {
-    if (!req.user.admin) {
-      res.json({ error: "unauthorized" });
-      next();
-      return;
-    }
-    const { title, contents, tags } = req.body;
+    console.log(req.body);
+    console.log(JSON.stringify(req.body.tags));
+
+    // if (!req.user.admin) {
+    //   res.json({ error: "unauthorized" });
+    //   next();
+    //   return;
+    // }
+    const { image, contents, tags } = req.body;
     // tags: asd9125kasdgj341254 fasdklj2365kljAAA AKLSDJGAKL1351askldjg
-    if (validatePost(req.body).error) {
-      res.status(400).json({ result: false, error: "양식에 맞지 않음" });
-      next();
-      return;
-    }
+    // if (validatePost(req.body).error) {
+    //   res.status(400).json({ result: false, error: "양식에 맞지 않음" });
+    //   next();
+    //   return;
+    // }
     const post = new Post({
-      title,
-      author: req.user.id,
-      contents,
-      tags
+      image: req.file.filename,
+      contents: req.body.contents,
+      tags: tags.split(",")
     });
     await post.save();
     //여기까지가 포스트만 작성
     //이제부터는 tag에다가 업데이트!
-    for (const tag_id of tags) {
+    for (const tag_id of tags.split(",")) {
+      console.log(tag_id);
       const tag = await Tag.findById(tag_id);
       tag.posts.push(post._id);
       await tag.save();

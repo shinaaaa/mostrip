@@ -15,6 +15,7 @@ const joinRouter = require("./routes/join");
 const emailRouter = require("./routes/email");
 const postRouter = require("./routes/post");
 const tagRouter = require("./routes/tag");
+const mainRouter = require("./routes/main");
 
 var app = express();
 
@@ -44,6 +45,7 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "uploads")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
@@ -52,6 +54,7 @@ app.use("/auth/join", joinRouter);
 app.use("/auth/email", emailRouter);
 app.use("/api/post", postRouter);
 app.use("/api/tag", tagRouter);
+app.use("/api/main", mainRouter);
 
 // 이것까지 실행해야 하기 때문에 위에서 next를 써줘야한다. 그래야 여기까지 실행함.
 app.use(() => mongoose.disconnect());
