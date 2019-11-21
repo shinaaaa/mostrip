@@ -1,45 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { baseURL } from './../config';
+import './../css/main.css'
 
 export default function Main() {
+  const [posts, setPosts] = useState([]);
+
+  const handle = async () => {
+    const { data } = await axios.get(`${baseURL}/api/main`);
+    console.log(data.result);
+    if (data) {
+      setPosts(data.result);
+    };
+  };
+
+  useEffect(() => {
+    handle();
+  }, []);
+
+  /*   const { data } = axios.get(`${baseURL}/api/main`);
+    console.log(data);
+    if (data) {
+      console.log(data);
+  
+      setPosts(data);
+    } */
   return (
     <header className="masthead">
       <div className="container">
         <div className="row">
           <div className="thumbnails">
-            <div>
-              <a href="../images/fulls/01.jpg">
-                <img src="../images/thumbs/01.jpg" alt="" />
-                <h3>Lorem ipsum dolor sit amet</h3>
-              </a>
-              <a href="../images/fulls/02.jpg">
-                <img src="../images/thumbs/02.jpg" alt="" />
-                <h3>Lorem ipsum dolor sit amet</h3>
-              </a>
-            </div>
-            <div>
-              <a href="images/fulls/03.jpg">
-                <img src="../images/thumbs/03.jpg" alt="" />
-                <h3>Lorem ipsum dolor sit amet</h3>
-              </a>
-              <a href="images/fulls/04.jpg">
-                <img src="../images/thumbs/04.jpg" alt="" />
-                <h3>Lorem ipsum dolor sit amet</h3>
-              </a>
-              <a href="images/fulls/05.jpg">
-                <img src="../images/thumbs/05.jpg" alt="" />
-                <h3>Lorem ipsum dolor sit amet</h3>
-              </a>
-            </div>
-            <div>
-              <a href="images/fulls/06.jpg">
-                <img src="../images/thumbs/06.jpg" alt="" />
-                <h3>Lorem ipsum dolor sit amet</h3>
-              </a>
-              <a href="images/fulls/07.jpg">
-                <img src="../images/thumbs/07.jpg" alt="" />
-                <h3>Lorem ipsum dolor sit amet</h3>
-              </a>
-            </div>
+            {posts.map(post => (
+              <div className="image-size">
+                <img src={`${baseURL}/${post.image}`} alt="" />
+              </div>
+            ))}
           </div>
         </div>
       </div>
