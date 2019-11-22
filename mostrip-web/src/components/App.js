@@ -8,6 +8,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Mypage from "./Mypage";
 import Write from "./Write";
+import calendar from "./calendar";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,6 +24,7 @@ function App() {
       <Route path="/write" component={Write} />
       <Route path="/join" component={Join} />
       <Route path="/mypage" component={Mypage} />
+      <Route path="/calendar" component={calendar} />
     </BrowserRouter>
   );
 }
