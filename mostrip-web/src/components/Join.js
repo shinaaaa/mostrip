@@ -42,13 +42,23 @@ export default function Join() {
             alert('회원 가입 실패 관리자에게 문의하세요.');
         }
     };
+
+    const uploadImage = (e) => {
+        if (e.type === 'image/png' || e.type === 'image/jpeg' || e.type === 'image/jpg') {
+            setImage(e);
+            return
+        } else {
+            alert('이미지 형식만 가능합니다.');
+            return
+        }
+    }
     return (
         <div className='div-box'>
             {joinResult && <Redirect to='/Login' />}
             <form className='form-row' onSubmit={handleSubmit} >
                 <div className="custom-file">
                     <input type="file" name="file" className="custom-file-input" id="validatedCustomFile"
-                        onChange={e => { setImage(e.target.files[0]) }} required />
+                        onChange={e => uploadImage(e.target.files[0])} required />
                     <label className="custom-file-label" for="validatedCustomFile" data-browse="Image File">{image ? image.name : 'Choose file...'}</label>
                 </div>
                 <div className="form-group">
