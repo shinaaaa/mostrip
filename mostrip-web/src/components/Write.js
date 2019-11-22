@@ -29,6 +29,10 @@ export default function Write() {
   };
 
   const addTag = async () => {
+    if (!tag) {
+      alert("태그를 입력해주세요")
+      return
+    }
     const res = await axios.get(`${baseURL}/api/tag/${tag}`);
     setTagNames([...tagNames, tag]);
     if (res.data.error) {

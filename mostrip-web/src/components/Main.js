@@ -8,7 +8,6 @@ export default function Main() {
 
   const handle = async () => {
     const { data } = await axios.get(`${baseURL}/api/main`);
-    console.log(data.result);
     if (data) {
       setPosts(data.result);
     };

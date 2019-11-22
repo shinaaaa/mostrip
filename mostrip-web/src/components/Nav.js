@@ -8,6 +8,7 @@ export default function Nav({ isLoggedIn, setIsLoggedIn }) {
     //만료시간을 현재시간으로 변경해서 쿠키를 파괴함.
     document.cookie = `Authorization=;expires=${new Date().toUTCString()}`;
     setIsLoggedIn(false);
+    window.location.replace('/');
   };
   useEffect(() => {
     setIsLoggedIn(document.cookie.includes("Authorization"));
