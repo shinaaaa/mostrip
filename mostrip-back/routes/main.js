@@ -7,7 +7,9 @@ const wrapper = require("../common/wrapper");
 router.get(
   "/",
   wrapper(async (req, res, next) => {
-    const img = await Post.find().select("image");
+    const img = await Post.find()
+      .select("image")
+      .sort("-date");
     console.log(img);
     if (img) {
       res.json({ result: img });
