@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import "./../css/Mypage.css";
 import axois from 'axios';
+import { Redirect } from 'react-router-dom';
 import { baseURL } from '../config';
 
 export default function Mypage() {
@@ -11,9 +12,11 @@ export default function Mypage() {
     const [isPasswordSame, setIsPasswordSame] = useState(false);
 
     useEffect(() => {
-        const exp = document.cookie.split(' ')[1];
-        const result = JSON.parse(atob(exp.split('.')[1]));
-        setemail(result.email)
+        if (document.cookie) {
+            const exp = document.cookie.split(' ')[1];
+            const result = JSON.parse(atob(exp.split('.')[1]));
+            setemail(result.email)
+        }
     }, [])
 
     const handleSubmit = async (e) => {
@@ -55,6 +58,7 @@ export default function Mypage() {
 
     return (
         <div className='div-box'>
+            {document.cookie ? null : <Redirect to='/Login' />}
             <form className="form-row" onSubmit={handleSubmit}>
                 <div className="custom-file">
                     <input type="file" className="custom-file-input" id="validatedCustomFile" onChange={e => uploadImage(e.target.files[0])} />
