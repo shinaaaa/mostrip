@@ -54,7 +54,7 @@ export default function Nav({ isLoggedIn, setIsLoggedIn }) {
             ) : (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/login">
+                    <Link className="nav-link" to="/login" onClick={() => { setisCollapsed(!isCollapsed); setisMenuOpened(!isMenuOpened); }}>
                       {" "}
                       Login
                   </Link>
