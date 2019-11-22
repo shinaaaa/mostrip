@@ -26,22 +26,15 @@ router.post(
     console.log(req.body);
     console.log(JSON.stringify(req.body.tags));
 
-    // if (!req.user.admin) {
-    //   res.json({ error: "unauthorized" });
-    //   next();
-    //   return;
-    // }
     const { image, contents, tags } = req.body;
-    // tags: asd9125kasdgj341254 fasdklj2365kljAAA AKLSDJGAKL1351askldjg
-    // if (validatePost(req.body).error) {
-    //   res.status(400).json({ result: false, error: "양식에 맞지 않음" });
-    //   next();
-    //   return;
-    // }
+
     const post = new Post({
       image: req.file.filename,
       contents: req.body.contents,
-      tags: tags.split(",")
+      tags: tags.split(","),
+      like: 0,
+      like_user: [],
+      date: new Date()
     });
     await post.save();
     //여기까지가 포스트만 작성

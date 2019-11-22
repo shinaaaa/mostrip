@@ -30,19 +30,11 @@ export default function Nav({ isLoggedIn, setIsLoggedIn }) {
                 Home
               </Link>
             </li>
-<<<<<<< HEAD
-=======
-
->>>>>>> f1fc1f3ac9ff932758dc443e5eae3b63b6ddbf63
             <li className="nav-item">
               <Link className="nav-link" to="/write">
                 WRITE
               </Link>
             </li>
-<<<<<<< HEAD
-=======
-
->>>>>>> f1fc1f3ac9ff932758dc443e5eae3b63b6ddbf63
             {isLoggedIn ? (
               <>
                 <li className="nav-item">

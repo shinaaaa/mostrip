@@ -7,10 +7,6 @@ import Nav from "./Nav";
 import Header from "./Header";
 import Main from "./Main";
 import Mypage from "./Mypage";
-<<<<<<< HEAD
-=======
-import Footer from "./Footer";
->>>>>>> f1fc1f3ac9ff932758dc443e5eae3b63b6ddbf63
 import Write from "./Write";
 
 function App() {
