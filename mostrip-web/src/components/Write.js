@@ -1,15 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { baseURL } from "../config";
+import { Redirect } from "react-router-dom";
 
 export default function Write() {
+  const [email, setemail] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
   const [tag, setTag] = useState("");
   const [tags, setTags] = useState([]);
+  const [tagNames, setTagNames] = useState([]);
   const [contents, setContents] = useState("");
+
+  useEffect(() => {
+    if (document.cookie) {
+      const exp = document.cookie.split(" ")[1];
+      const result = JSON.parse(atob(exp.split(".")[1]));
+      setemail(result.email);
+    }
+  }, []);
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("image", selectedFile);
+    formData.append("contents", contents);
+    formData.append("tags", tags);
+    formData.append("email", email);
+
+    const { data } = axios.post(`${baseURL}/api/post`, formData);
+  };
 
   const addTag = async () => {
     const res = await axios.get(`${baseURL}/api/tag/${tag}`);
+    setTagNames([...tagNames, tag]);
     if (res.data.error) {
       const { data } = await axios.post(`${baseURL}/api/tag`, {
         name: tag
@@ -18,19 +39,21 @@ export default function Write() {
       setTag("");
     } else {
       setTags([...tags, res.data.tag._id]);
-      console.log(res.data.tag._id);
-      console.log(tags);
       setTag("");
     }
   };
   const deleteTag = i => {
     const newTags = [...tags];
+    const newTagNames = [...tagNames];
     newTags.splice(i, 1);
+    newTagNames.splice(i, 1);
     setTags(newTags);
+    setTagNames(newTagNames);
   };
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
+      {document.cookie ? null : <Redirect to="/Login" />}
       <label>태그 추가</label>
       <input type="text" value={tag} onChange={e => setTag(e.target.value)} />
       <button type="button" className="btn btn-success" onClick={addTag}>
@@ -44,7 +67,7 @@ export default function Write() {
             className="btn btn-secondary"
             onClick={() => deleteTag(i)}
           >
-            {name}
+            {tagNames[i]}
           </button>
         ))}
       </div>
@@ -67,14 +90,7 @@ export default function Write() {
         <button
           type="button"
           className="btn btn-secondary"
-          onClick={() => {
-            const formData = new FormData();
-            formData.append("image", selectedFile);
-            formData.append("contents", contents);
-            formData.append("tags", tags);
-
-            return axios.post(`${baseURL}/api/post`, formData);
-          }}
+          onClick={handleSubmit}
         >
           upload
         </button>

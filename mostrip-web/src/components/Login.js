@@ -27,7 +27,7 @@ export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
   };
   return (
     <div className='div-box'>
-      {loginState === 'success' ? (<Redirect to="/" />) : null}
+      {loginState === 'success' ? (window.location.replace('/')) : null}
       <form className='form-row' onSubmit={handleSubmit}>
         {loginState === 'failed' ? '이메일 혹은 비밀번호를 추가해 주세요' : null}
         <div className="form-group">
