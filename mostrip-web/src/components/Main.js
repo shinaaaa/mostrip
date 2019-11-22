@@ -18,26 +18,28 @@ export default function Main() {
     handle();
   }, []);
 
-  /*   const { data } = axios.get(`${baseURL}/api/main`);
-    console.log(data);
-    if (data) {
-      console.log(data);
-  
-      setPosts(data);
-    } */
+  const onClickPost = async e => {
+    const jwt = document.cookie;
+    const token = jwt.split(" ")[1];
+    const { email } = JSON.parse(atob(token.split(".")[1]));
+    const { data } = await axios.post(`${baseURL}/api/like`, {
+      _id: e,
+      email
+    });
+    alert(data)
+  };
+
   return (
-    <header className="masthead">
-      <div className="container">
-        <div className="row">
-          <div className="thumbnails">
-            {posts.map(post => (
-              <div className="image-size">
-                <img src={`${baseURL}/${post.image}`} alt="" />
-              </div>
-            ))}
-          </div>
+    <div className='flex'>
+      <header className="masthead">
+        <div >
+          {posts.map((post, i) => (
+            <div key={i} className="image-size">
+              <img id={post._id} src={`${baseURL}/${post.image}`} alt="" onClick={e => onClickPost(e.target.id)} />
+            </div>
+          ))}
         </div>
-      </div>
-    </header>
+      </header>
+    </div>
   );
 }
