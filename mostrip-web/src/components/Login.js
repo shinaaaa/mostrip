@@ -19,14 +19,12 @@ export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
       const { exp } = JSON.parse(atob(data.token.split('.')[1])); /* base64 Decoding */
       const exprires = new Date(exp * 1000).toUTCString();
       document.cookie = `Authorization=JWT ${data.token}; exprires=${exprires}`;
-      console.log(data);
-      console.log(data.admin);
-
       setLoginState('success');
     };
   };
   return (
     <div className='div-box'>
+      {document.cookie ? <Redirect to='/' /> : null}
       {loginState === 'success' ? (window.location.replace('/')) : null}
       <form className='form-row' onSubmit={handleSubmit}>
         {loginState === 'failed' ? '이메일 혹은 비밀번호를 추가해 주세요' : null}

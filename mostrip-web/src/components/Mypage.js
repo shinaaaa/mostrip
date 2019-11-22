@@ -21,27 +21,24 @@ export default function Mypage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isPasswordSame || (password === '' && password2 === '')) {
-            const jwt = document.cookie;
-            const token = jwt.split(" ")[1];
-            const { email } = JSON.parse(atob(token.split(".")[1]));
-            console.log(email);
-
-            const formData = new FormData();
-            formData.append('file', image);
-            formData.append('email', email);
+        const formData = new FormData();
+        if (isPasswordSame || image === null) {
             formData.append('password', password);
-
-            const { data } = await axois.post(`${baseURL}/auth/mypage`, formData);
-            if (data.result === true) {
-                alert('개인 정보가 수정되었습니다.')
-                return
-            } else {
-                alert('오류 입니다. 관리자에게 문의해주세요.')
-                return
-            }
+        }
+        if ((password === '' && password2 === '') || image) {
+            formData.append('file', image);
+            return
+        }
+        if ((password === '' && password2 === '') && image === null) {
+            alert('변경 사항을 기재해주세요.')
+        }
+        formData.append('email', email);
+        const { data } = await axois.post(`${baseURL}/auth/mypage`, formData);
+        if (data.result === true) {
+            alert('개인 정보가 수정되었습니다.')
+            return
         } else {
-            alert('비밀번호가 일치하지않습니다.')
+            alert('오류 입니다. 관리자에게 문의해주세요.')
             return
         }
     }
@@ -67,7 +64,7 @@ export default function Mypage() {
                 <div>
                     <div className="form-group">
                         <label for="inputEmail4">Email</label>
-                        <input type="email" className="input-style" id="inputEmail4" placeholder={email} disabled />
+                        <input type="email" className="input-style" id="inputEmail4" placeholder={email} required disabled />
                     </div>
                     <div className="form-group">
                         <label for="inputPassword4">Password</label>
