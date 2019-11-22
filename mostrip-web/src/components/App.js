@@ -7,11 +7,8 @@ import Nav from "./Nav";
 import Header from "./Header";
 import Main from "./Main";
 import Mypage from "./Mypage";
-<<<<<<< HEAD
-=======
-import Footer from "./Footer";
->>>>>>> f1fc1f3ac9ff932758dc443e5eae3b63b6ddbf63
 import Write from "./Write";
+import calendar from "./calendar";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,6 +24,7 @@ function App() {
       <Route path="/write" component={Write} />
       <Route path="/join" component={Join} />
       <Route path="/mypage" component={Mypage} />
+      <Route path="/calendar" component={calendar} />
     </BrowserRouter>
   );
 }

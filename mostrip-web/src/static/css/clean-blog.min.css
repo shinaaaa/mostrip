@@ -2749,7 +2749,7 @@ footer .copyright {
 		-moz-flex-direction: row;
 		-webkit-flex-direction: row;
 		-ms-flex-direction: row;
-		flex-direction: row;
+		flex-direction: column;
 		position: relative;
 		margin: 0 0 2em -2em;
 	}
@@ -2809,6 +2809,8 @@ footer .copyright {
 
 			.thumbnails {
 				margin: 0 0 2em -1.5em;
+				display: flex;
+				flex-direction: column;
 			}
 
 				.thumbnails a {
