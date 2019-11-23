@@ -39,7 +39,9 @@ router.post(
       name: req.body.name,
       email: req.body.email,
       password: hashedPW,
-      clAss: false
+      clAss: false,
+      like: 0,
+      like_user: []
     });
     const saveResult = await user.save();
     res.json({ result: true });
