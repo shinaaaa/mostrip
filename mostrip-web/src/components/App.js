@@ -13,7 +13,8 @@ import calendar from "./calendar";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const auth = { isLoggedIn, isAdmin, setIsLoggedIn, setIsAdmin };
+  const [clAss, setClAss] = useState(false);
+  const auth = { isLoggedIn, isAdmin, setIsLoggedIn, setIsAdmin, setClAss };
 
   return (
     <BrowserRouter>
