@@ -10,6 +10,7 @@ export default function Mypage() {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [isPasswordSame, setIsPasswordSame] = useState(false);
+    const [confirm, setConfirm] = useState(false);
 
     useEffect(() => {
         if (document.cookie) {
@@ -36,6 +37,7 @@ export default function Mypage() {
         const { data } = await axois.post(`${baseURL}/auth/mypage`, formData);
         if (data.result === true) {
             alert('개인 정보가 수정되었습니다.')
+            setConfirm(true);
             return
         } else {
             alert('오류 입니다. 관리자에게 문의해주세요.')
@@ -56,6 +58,7 @@ export default function Mypage() {
     return (
         <div className='div-box'>
             {document.cookie ? null : <Redirect to='/Login' />}
+            {confirm ? <Redirect to='/' /> : null}
             <form className="form-row" onSubmit={handleSubmit}>
                 <div className="custom-file">
                     <input type="file" className="custom-file-input" id="validatedCustomFile" onChange={e => uploadImage(e.target.files[0])} />

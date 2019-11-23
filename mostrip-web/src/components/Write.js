@@ -10,12 +10,15 @@ export default function Write() {
   const [tags, setTags] = useState([]);
   const [tagNames, setTagNames] = useState([]);
   const [contents, setContents] = useState("");
+  const [upload, setupload] = useState(false)
+  const [clAss, setClAss] = useState(false);
 
   useEffect(() => {
     if (document.cookie) {
       const exp = document.cookie.split(" ")[1];
       const result = JSON.parse(atob(exp.split(".")[1]));
       setemail(result.email);
+      setClAss(result.clAss);
     }
   }, []);
   const handleSubmit = async () => {
@@ -25,7 +28,13 @@ export default function Write() {
     formData.append("tags", tags);
     formData.append("email", email);
 
-    const { data } = axios.post(`${baseURL}/api/post`, formData);
+    const { data } = await axios.post(`${baseURL}/api/post`, formData);
+    if (data.result) {
+      alert('게시글이 등록되었습니다.')
+      setupload(true);
+    } else {
+      alert('게시글 등록에 실패했습니다. 관리자에게 문의해 주세요.')
+    }
   };
 
   const addTag = async () => {
@@ -58,6 +67,8 @@ export default function Write() {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       {document.cookie ? null : <Redirect to="/Login" />}
+      {clAss ? null : <Redirect to='/' />}
+      {upload ? <Redirect to='/' /> : null}
       <label>태그 추가</label>
       <input type="text" value={tag} onChange={e => setTag(e.target.value)} />
       <button type="button" className="btn btn-success" onClick={addTag}>

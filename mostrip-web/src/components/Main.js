@@ -5,12 +5,17 @@ import './../css/main.css'
 
 export default function Main() {
   const [posts, setPosts] = useState([]);
+  const [post_id, setPost_id] = useState(null)
+  const [onClickLike, setOnClickLike] = useState(false);
+  const [page, setPage] = useState(1);
+  const [nextbtn, setNextbtn] = useState(true);
 
   const handle = async () => {
-    const { data } = await axios.get(`${baseURL}/api/main`);
+    const { data } = await axios.get(`${baseURL}/api/main?page=${page}`);
     if (data) {
       setPosts(data.result);
     };
+    setPage(parseInt(page) + 1);
   };
 
   useEffect(() => {
@@ -25,8 +30,28 @@ export default function Main() {
       _id: e,
       email
     });
-    alert(data)
+    if (data.result) {
+      setPost_id(e);
+      setOnClickLike(data.result);
+      setTimeout(() => {
+        setPost_id(null);
+        setOnClickLike(false);
+      }, 1000);
+    } else {
+      setOnClickLike(data.result);
+      alert('취소되었습니다.');
+    }
   };
+
+  const NextPage = async () => {
+    const { data } = await axios.get(`${baseURL}/api/main?page=${page}`);
+    if (data.result) {
+      setPosts(data.result);
+      setPage(parseInt(page) + 1);
+    } else {
+      setNextbtn(false);
+    }
+  }
 
   return (
     <div className='flex'>
@@ -34,10 +59,15 @@ export default function Main() {
         <div >
           {posts.map((post, i) => (
             <div key={i} className="image-size">
-              <img id={post._id} src={`${baseURL}/${post.image}`} alt="" onClick={e => onClickPost(e.target.id)} />
+              <img id={post._id}
+                className={onClickLike && post_id === post._id ? 'animated heartBeat slow' : null}
+                src={onClickLike && post_id === post._id ? `../images/like.png` : `${baseURL}/${post.image}`}
+                alt=""
+                onClick={document.cookie ? e => onClickPost(e.target.id) : null} />
             </div>
           ))}
         </div>
+        {nextbtn ? <button type="button" class="btn btn-primary btn-lg btn-block" onClick={e => NextPage()}> 더보기</button> : null}
       </header>
     </div>
   );
