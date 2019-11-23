@@ -23,7 +23,9 @@ router.post(
         {
           name: user.name,
           email: user.email,
-          admin: user.admin
+          admin: user.admin,
+          image: user.image,
+          clAss: user.clAss
         },
         jwtSecret,
         { expiresIn: "1h" }
