@@ -25,10 +25,14 @@ export default function Write() {
     formData.append("tags", tags);
     formData.append("email", email);
 
-    const { data } = axios.post(`${baseURL}/api/post`, formData);
+    await axios.post(`${baseURL}/api/post`, formData);
   };
 
   const addTag = async () => {
+    if (!tag) {
+      alert("태그를 입력해주세요");
+      return;
+    }
     const res = await axios.get(`${baseURL}/api/tag/${tag}`);
     setTagNames([...tagNames, tag]);
     if (res.data.error) {
@@ -55,7 +59,13 @@ export default function Write() {
     <div style={{ display: "flex", flexDirection: "column" }}>
       {document.cookie ? null : <Redirect to="/Login" />}
       <label>태그 추가</label>
-      <input type="text" value={tag} onChange={e => setTag(e.target.value)} />
+      <input
+        type="text"
+        value={tag}
+        onChange={e => {
+          setTag(e.target.value);
+        }}
+      />
       <button type="button" className="btn btn-success" onClick={addTag}>
         태그 추가
       </button>
@@ -80,13 +90,24 @@ export default function Write() {
       />
 
       <div>
-        <input
-          type="file"
-          name="file"
-          onChange={e => {
-            setSelectedFile(e.target.files[0]);
-          }}
-        />
+        <div class="custom-file">
+          <input
+            type="file"
+            className="custom-file-input"
+            id="validatedCustomFile"
+            onChange={e => {
+              setSelectedFile(e.target.files[0]);
+            }}
+            required
+          />
+          <label
+            className="custom-file-label"
+            for="validatedCustomFile"
+            data-browse="Image File"
+          >
+            {selectedFile ? selectedFile.name : "Choose file..."}
+          </label>
+        </div>
         <button
           type="button"
           className="btn btn-secondary"
