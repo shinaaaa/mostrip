@@ -9,12 +9,12 @@ import Main from "./Main";
 import Mypage from "./Mypage";
 import Write from "./Write";
 import calendar from "./calendar";
+import Nonops from "./Nonops"
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [clAss, setClAss] = useState(false);
-  const auth = { isLoggedIn, isAdmin, setIsLoggedIn, setIsAdmin, setClAss };
+  const auth = { isLoggedIn, isAdmin, setIsLoggedIn, setIsAdmin };
 
   return (
     <BrowserRouter>
@@ -26,6 +26,7 @@ function App() {
       <Route path="/join" component={Join} />
       <Route path="/mypage" component={Mypage} />
       <Route path="/calendar" component={calendar} />
+      <Route path="/Nonops" component={Nonops} />
     </BrowserRouter>
   );
 }

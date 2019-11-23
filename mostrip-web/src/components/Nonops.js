@@ -5,7 +5,7 @@ import './../css/main.css'
 import 'mdbootstrap/css/mdb.min.css';
 
 
-export default function Main() {
+export default function Nonops() {
   const [posts, setPosts] = useState([]);
   const [post_id, setPost_id] = useState(null)
   const [onClickLike, setOnClickLike] = useState(false);
@@ -13,7 +13,7 @@ export default function Main() {
   const [nextbtn, setNextbtn] = useState(true);
 
   const handle = async () => {
-    const { data } = await axios.get(`${baseURL}/api/main?page=${page}`);
+    const { data } = await axios.get(`${baseURL}/api/nonops?page=${page}`);
     if (data) {
       setPosts(data.result);
     };
@@ -27,12 +27,16 @@ export default function Main() {
   const onClickPost = async e => {
     const jwt = document.cookie;
     const token = jwt.split(" ")[1];
-    const { email } = JSON.parse(atob(token.split(".")[1]));
-    const { data } = await axios.post(`${baseURL}/api/like`, {
+    const userData = JSON.parse(atob(token.split(".")[1]));
+    console.log(userData);
+
+    const { data } = await axios.post(`${baseURL}/api/nonops_like`, {
       _id: e,
-      email
+      email: userData._id
     });
     if (data.result) {
+      console.log(data.result);
+
       setPost_id(e);
       setOnClickLike(data.result);
       setTimeout(() => {
@@ -40,13 +44,14 @@ export default function Main() {
         setOnClickLike(false);
       }, 1000);
     } else {
+      console.log(data.result);
       setOnClickLike(data.result);
       alert('취소되었습니다.');
     }
   };
 
   const NextPage = async () => {
-    const { data } = await axios.get(`${baseURL}/api/main?page=${page}`);
+    const { data } = await axios.get(`${baseURL}/api/nonops?page=${page}`);
     if (data.result) {
       setPosts(data.result);
       setPage(parseInt(page) + 1);
