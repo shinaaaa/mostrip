@@ -17,10 +17,7 @@ export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
     if (!data.result) {
       setLoginState('failed');
     } else {
-      /* const { exp } = JSON.parse(atob(data.token.split('.')[1])); */
-
       const { exp } = jwt_decode(data.token);
-      console.log('하이 : ', exp);
 
       const exprires = new Date(exp * 1000).toUTCString();
 

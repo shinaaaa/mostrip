@@ -3,6 +3,7 @@ import axios from "axios";
 import { baseURL } from './../config';
 import './../css/main.css'
 import 'mdbootstrap/css/mdb.min.css';
+import jwt_decode from 'jwt-decode';
 
 
 export default function Main() {
@@ -27,7 +28,7 @@ export default function Main() {
   const onClickPost = async e => {
     const jwt = document.cookie;
     const token = jwt.split(" ")[1];
-    const { email } = JSON.parse(atob(token.split(".")[1]));
+    const { email } = jwt_decode(token);
     const { data } = await axios.post(`${baseURL}/api/like`, {
       _id: e,
       email
