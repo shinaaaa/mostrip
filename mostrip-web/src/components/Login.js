@@ -23,7 +23,6 @@ export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
       console.log('하이 : ', exp);
 
       const exprires = new Date(exp * 1000).toUTCString();
-
       document.cookie = `Authorization=JWT ${data.token}; exprires=${exprires}`;
       setLoginState('success');
     };

@@ -73,6 +73,16 @@ export default function Main() {
     }
   };
 
+  const NextPage = async () => {
+    const { data } = await axios.get(`${baseURL}/api/main?page=${page}`);
+    if (data.result) {
+      setPosts(data.result);
+      setPage(parseInt(page) + 1);
+    } else {
+      setNextbtn(false);
+    }
+  }
+
   return (
     <div className="flex">
       <header className="masthead">

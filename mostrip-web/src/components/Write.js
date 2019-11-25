@@ -16,7 +16,6 @@ export default function Write() {
   var result = jwt_decode(exp);
   const clAss = result.clAss;
   const email = result.email;
-
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("image", selectedFile);
