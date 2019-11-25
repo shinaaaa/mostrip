@@ -8,7 +8,10 @@ const userSchema = new Schema({
   email: { type: String, unique: true },
   password: String,
   admin: { type: Boolean, default: false },
-  image: String
+  image: String,
+  clAss: Boolean,
+  like: Number,
+  like_user: [{ type: mongoose.Types.ObjectId, ref: "users" }]
 });
 
 // model로 User테이블에 접근이 가능함.

@@ -38,7 +38,10 @@ router.post(
       image: req.file.filename,
       name: req.body.name,
       email: req.body.email,
-      password: hashedPW
+      password: hashedPW,
+      clAss: false,
+      like: 0,
+      like_user: []
     });
     const saveResult = await user.save();
     res.json({ result: true });

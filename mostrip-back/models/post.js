@@ -8,7 +8,8 @@ const postSchema = new Schema({
   tags: [{ type: mongoose.Types.ObjectId, ref: "Tag" }],
   like: Number,
   like_user: [{ type: mongoose.Types.ObjectId, ref: "users" }],
-  date: Date
+  date: Date,
+  email: String
 });
 
 const Post = model("Post", postSchema);

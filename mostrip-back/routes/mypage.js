@@ -25,17 +25,24 @@ router.post(
   upload,
   wrapper(async (req, res, next) => {
     const { file, email, password } = req.body;
-    console.log(req.file);
-    console.log(req.body);
-
-    const saltRound = 10;
-    const hashedPW = await bcrypt.hash(password, saltRound);
-
     const user = await User.findOne({ email });
-    user.image = req.file.filename;
-    user.password = hashedPW;
-    console.log(user);
-    const saveResult = await user.save();
+    if (!req.file) {
+      const saltRound = 10;
+      const hashedPW = await bcrypt.hash(password, saltRound);
+
+      user.password = hashedPW;
+
+      await user.save();
+    } else if (req.password === "") {
+      user.image = req.file.filename;
+      await user.save();
+    }
+    console.log("req.body: ", req.body);
+
+    // user.image = req.file.filename;
+    // user.password = hashedPW;
+    // console.log(user);
+    // const saveResult = await user.save();
     res.json({ result: true });
     next();
   })

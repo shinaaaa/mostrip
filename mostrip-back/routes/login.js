@@ -21,9 +21,12 @@ router.post(
       //토큰을 만들어 줍시다!
       const token = jwt.sign(
         {
+          _id: user._id,
           name: user.name,
           email: user.email,
-          admin: user.admin
+          admin: user.admin,
+          image: user.image,
+          clAss: user.clAss
         },
         jwtSecret,
         { expiresIn: "1h" }
