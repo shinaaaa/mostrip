@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
+    "jwt-decode": "^2.2.0",
     "mdbootstrap": "^4.9.0",
     "moment": "^2.24.0",
     "react": "^16.12.0",
@@ -17,7 +18,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "aws s3 sync ./build s3://mostrip --profile=shinkim"
   },
   "eslintConfig": {
     "extends": "react-app"

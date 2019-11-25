@@ -17,8 +17,7 @@ import List from './List';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [clAss, setClAss] = useState(false);
-  const auth = { isLoggedIn, isAdmin, setIsLoggedIn, setIsAdmin, setClAss };
+  const auth = { isLoggedIn, isAdmin, setIsLoggedIn, setIsAdmin };
 
   return (
     <BrowserRouter>

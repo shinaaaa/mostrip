@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { baseURL } from "./../config";
-import "./../css/main.css";
-import "mdbootstrap/css/mdb.min.css";
-import jwt_decode from "jwt-decode";
+import { baseURL } from './../config';
+import './../css/main.css'
+import 'mdbootstrap/css/mdb.min.css';
+import jwt_decode from 'jwt-decode';
+
 
 export default function Main() {
   const [posts, setPosts] = useState([]);
@@ -73,16 +74,6 @@ export default function Main() {
     }
   };
 
-  const NextPage = async () => {
-    const { data } = await axios.get(`${baseURL}/api/main?page=${page}`);
-    if (data.result) {
-      setPosts(data.result);
-      setPage(parseInt(page) + 1);
-    } else {
-      setNextbtn(false);
-    }
-  }
-
   return (
     <div className="flex">
       <header className="masthead">
@@ -110,11 +101,11 @@ export default function Main() {
               {isLoading ? (
                 <i class="fas fa-star-christmas fa-spin"></i>
               ) : (
-                <i
-                  class="fas fa-comment fa-1x"
-                  onClick={() => setCommentFlag(!commentFlag)}
-                ></i>
-              )}
+                  <i
+                    class="fas fa-comment fa-1x"
+                    onClick={() => setCommentFlag(!commentFlag)}
+                  ></i>
+                )}
               {/* <img
                 src="/../../images/comment.png"
                 onClick={() => setCommentFlag(!commentFlag)}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 
-export default function Nav({ isLoggedIn, setIsLoggedIn, setClAss }) {
+export default function Nav({ isLoggedIn, setIsLoggedIn }) {
   const [isCollapsed, setisCollapsed] = useState(true);
   const [isMenuOpened, setisMenuOpened] = useState(false);
   const [clAss, setClAss] = useState(false);
