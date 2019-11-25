@@ -11,9 +11,10 @@ router.get(
     console.log("skip:", skip);
     const img = await Post.find()
       .select("image")
+      .select("comments")
       .limit(skip)
       .sort("-date");
-    // console.log(img);
+    console.log(img);
     console.log("length:", img.length);
     if (skip > img.length + 5) {
       res.json({ result: false });
@@ -35,6 +36,7 @@ router.get(
     console.log(skip);
     const img = await Post.find()
       .select("image")
+      .select("comments")
       .limit(skip)
       .sort("-date");
     console.log(img);
