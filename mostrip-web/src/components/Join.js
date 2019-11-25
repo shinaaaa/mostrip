@@ -54,6 +54,7 @@ export default function Join() {
     }
     return (
         <div className='div-box'>
+            {document.cookie ? <Redirect to='/' /> : null}
             {joinResult && <Redirect to='/Login' />}
             <form className='form-row' onSubmit={handleSubmit} >
                 <div className="custom-file">

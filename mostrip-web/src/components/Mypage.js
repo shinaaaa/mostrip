@@ -3,6 +3,7 @@ import "./../css/Mypage.css";
 import axois from 'axios';
 import { Redirect } from 'react-router-dom';
 import { baseURL } from '../config';
+import jwt_decode from 'jwt-decode';
 
 export default function Mypage() {
     const [email, setemail] = useState('')
@@ -10,38 +11,37 @@ export default function Mypage() {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [isPasswordSame, setIsPasswordSame] = useState(false);
+    const [confirm, setConfirm] = useState(false);
 
     useEffect(() => {
         if (document.cookie) {
             const exp = document.cookie.split(' ')[1];
-            const result = JSON.parse(atob(exp.split('.')[1]));
+            var result = jwt_decode(exp);
             setemail(result.email)
         }
     }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isPasswordSame || (password === '' && password2 === '')) {
-            const jwt = document.cookie;
-            const token = jwt.split(" ")[1];
-            const { email } = JSON.parse(atob(token.split(".")[1]));
-            console.log(email);
-
-            const formData = new FormData();
-            formData.append('file', image);
-            formData.append('email', email);
+        const formData = new FormData();
+        if (isPasswordSame || image === null) {
             formData.append('password', password);
-
-            const { data } = await axois.post(`${baseURL}/auth/mypage`, formData);
-            if (data.result === true) {
-                alert('개인 정보가 수정되었습니다.')
-                return
-            } else {
-                alert('오류 입니다. 관리자에게 문의해주세요.')
-                return
-            }
+        }
+        if ((password === '' && password2 === '') || image) {
+            formData.append('file', image);
+            return
+        }
+        if ((password === '' && password2 === '') && image === null) {
+            alert('변경 사항을 기재해주세요.')
+        }
+        formData.append('email', email);
+        const { data } = await axois.post(`${baseURL}/auth/mypage`, formData);
+        if (data.result === true) {
+            alert('개인 정보가 수정되었습니다.')
+            setConfirm(true);
+            return
         } else {
-            alert('비밀번호가 일치하지않습니다.')
+            alert('오류 입니다. 관리자에게 문의해주세요.')
             return
         }
     }
@@ -59,6 +59,7 @@ export default function Mypage() {
     return (
         <div className='div-box'>
             {document.cookie ? null : <Redirect to='/Login' />}
+            {confirm ? <Redirect to='/' /> : null}
             <form className="form-row" onSubmit={handleSubmit}>
                 <div className="custom-file">
                     <input type="file" className="custom-file-input" id="validatedCustomFile" onChange={e => uploadImage(e.target.files[0])} />
@@ -67,7 +68,7 @@ export default function Mypage() {
                 <div>
                     <div className="form-group">
                         <label for="inputEmail4">Email</label>
-                        <input type="email" className="input-style" id="inputEmail4" placeholder={email} disabled />
+                        <input type="email" className="input-style" id="inputEmail4" placeholder={email} required disabled />
                     </div>
                     <div className="form-group">
                         <label for="inputPassword4">Password</label>

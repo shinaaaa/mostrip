@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import jwt_decode from 'jwt-decode';
 
 export default function Nav({ isLoggedIn, setIsLoggedIn }) {
   const [isCollapsed, setisCollapsed] = useState(true);
   const [isMenuOpened, setisMenuOpened] = useState(false);
+  const [clAss, setClAss] = useState(false);
+
   const logout = () => {
     //만료시간을 현재시간으로 변경해서 쿠키를 파괴함.
     document.cookie = `Authorization=;expires=${new Date().toUTCString()}`;
     setIsLoggedIn(false);
+    window.location.replace('/');
   };
   useEffect(() => {
-    setIsLoggedIn(document.cookie.includes("Authorization"));
+    if (document.cookie) {
+      setIsLoggedIn(document.cookie.includes("Authorization"));
+      const jwt = document.cookie;
+      const token = jwt.split(" ")[1];
+      const data = jwt_decode(token);
+      setClAss(data.clAss);
+    }
   }, []);
   return (
     <nav
@@ -33,7 +43,7 @@ export default function Nav({ isLoggedIn, setIsLoggedIn }) {
                 Home
               </Link>
             </li>
-            {isLoggedIn ? (
+            {isLoggedIn && clAss === true ? (
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/write" onClick={() => { setisCollapsed(!isCollapsed); setisMenuOpened(!isMenuOpened); }}>
@@ -51,24 +61,37 @@ export default function Nav({ isLoggedIn, setIsLoggedIn }) {
                   </Link>
                 </li>
               </>
+            ) : isLoggedIn ? (
+              <>
+                <li className="nav-item">
+                  <a className="nav-link" onClick={logout} >
+                    Logout
+                </a>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/mypage" onClick={() => { setisCollapsed(!isCollapsed); setisMenuOpened(!isMenuOpened); }}>
+                    Mypage
+                </Link>
+                </li>
+              </>
             ) : (
-                <>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/login" onClick={() => { setisCollapsed(!isCollapsed); setisMenuOpened(!isMenuOpened); }}>
-                      {" "}
-                      Login
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/login" onClick={() => { setisCollapsed(!isCollapsed); setisMenuOpened(!isMenuOpened); }}>
+                        {" "}
+                        Login
                   </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/join" onClick={() => { setisCollapsed(!isCollapsed); setisMenuOpened(!isMenuOpened); }}>
-                      Join
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/join" onClick={() => { setisCollapsed(!isCollapsed); setisMenuOpened(!isMenuOpened); }}>
+                        Join
                   </Link>
-                  </li>
-                </>
-              )}
+                    </li>
+                  </>
+                )}
           </ul>
         </div>
       </div>
-    </nav>
+    </nav >
   );
 }

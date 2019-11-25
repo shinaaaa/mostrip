@@ -2,22 +2,21 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { baseURL } from "../config";
 import { Redirect } from "react-router-dom";
+import jwt_decode from 'jwt-decode';
 
 export default function Write() {
-  const [email, setemail] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
   const [tag, setTag] = useState("");
   const [tags, setTags] = useState([]);
   const [tagNames, setTagNames] = useState([]);
   const [contents, setContents] = useState("");
+  const [upload, setupload] = useState(false);
 
-  useEffect(() => {
-    if (document.cookie) {
-      const exp = document.cookie.split(" ")[1];
-      const result = JSON.parse(atob(exp.split(".")[1]));
-      setemail(result.email);
-    }
-  }, []);
+  const exp = document.cookie.split(" ")[1];
+  var result = jwt_decode(exp);
+  const clAss = result.clAss;
+  const email = result.email;
+
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("image", selectedFile);
@@ -25,13 +24,19 @@ export default function Write() {
     formData.append("tags", tags);
     formData.append("email", email);
 
-    await axios.post(`${baseURL}/api/post`, formData);
+    const { data } = await axios.post(`${baseURL}/api/post`, formData);
+    if (data.result) {
+      alert('게시글이 등록되었습니다.')
+      setupload(true);
+    } else {
+      alert('게시글 등록에 실패했습니다. 관리자에게 문의해 주세요.')
+    }
   };
 
   const addTag = async () => {
     if (!tag) {
-      alert("태그를 입력해주세요");
-      return;
+      alert("태그를 입력해주세요")
+      return
     }
     const res = await axios.get(`${baseURL}/api/tag/${tag}`);
     setTagNames([...tagNames, tag]);
@@ -58,14 +63,10 @@ export default function Write() {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       {document.cookie ? null : <Redirect to="/Login" />}
+      {clAss ? null : <Redirect to='/' />}
+      {upload ? <Redirect to='/' /> : null}
       <label>태그 추가</label>
-      <input
-        type="text"
-        value={tag}
-        onChange={e => {
-          setTag(e.target.value);
-        }}
-      />
+      <input type="text" value={tag} onChange={e => setTag(e.target.value)} />
       <button type="button" className="btn btn-success" onClick={addTag}>
         태그 추가
       </button>
@@ -90,24 +91,13 @@ export default function Write() {
       />
 
       <div>
-        <div class="custom-file">
-          <input
-            type="file"
-            className="custom-file-input"
-            id="validatedCustomFile"
-            onChange={e => {
-              setSelectedFile(e.target.files[0]);
-            }}
-            required
-          />
-          <label
-            className="custom-file-label"
-            for="validatedCustomFile"
-            data-browse="Image File"
-          >
-            {selectedFile ? selectedFile.name : "Choose file..."}
-          </label>
-        </div>
+        <input
+          type="file"
+          name="file"
+          onChange={e => {
+            setSelectedFile(e.target.files[0]);
+          }}
+        />
         <button
           type="button"
           className="btn btn-secondary"
