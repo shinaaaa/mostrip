@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { baseURL } from './../config';
 import "./../css/Login.css";
+import jwt_decode from 'jwt-decode';
 
 export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
   const [loginState, setLoginState] = useState('init');
@@ -16,17 +17,20 @@ export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
     if (!data.result) {
       setLoginState('failed');
     } else {
-      const { exp } = JSON.parse(atob(data.token.split('.')[1])); /* base64 Decoding */
-      const exprires = new Date(exp * 1000).toUTCString();
-      document.cookie = `Authorization=JWT ${data.token}; exprires=${exprires}`;
-      console.log(data);
-      console.log(data.admin);
+      /* const { exp } = JSON.parse(atob(data.token.split('.')[1])); */
 
+      const { exp } = jwt_decode(data.token);
+      console.log('하이 : ', exp);
+
+      const exprires = new Date(exp * 1000).toUTCString();
+
+      document.cookie = `Authorization=JWT ${data.token}; exprires=${exprires}`;
       setLoginState('success');
     };
   };
   return (
     <div className='div-box'>
+      {document.cookie ? <Redirect to='/' /> : null}
       {loginState === 'success' ? (window.location.replace('/')) : null}
       <form className='form-row' onSubmit={handleSubmit}>
         {loginState === 'failed' ? '이메일 혹은 비밀번호를 추가해 주세요' : null}
