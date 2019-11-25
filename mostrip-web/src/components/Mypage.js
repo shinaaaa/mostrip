@@ -3,6 +3,7 @@ import "./../css/Mypage.css";
 import axois from 'axios';
 import { Redirect } from 'react-router-dom';
 import { baseURL } from '../config';
+import jwt_decode from 'jwt-decode';
 
 export default function Mypage() {
     const [email, setemail] = useState('')
@@ -15,7 +16,7 @@ export default function Mypage() {
     useEffect(() => {
         if (document.cookie) {
             const exp = document.cookie.split(' ')[1];
-            const result = JSON.parse(atob(exp.split('.')[1]));
+            var result = jwt_decode(exp);
             setemail(result.email)
         }
     }, [])

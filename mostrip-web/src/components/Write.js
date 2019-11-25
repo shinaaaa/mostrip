@@ -2,25 +2,20 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { baseURL } from "../config";
 import { Redirect } from "react-router-dom";
+import jwt_decode from 'jwt-decode';
 
 export default function Write() {
-  const [email, setemail] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
   const [tag, setTag] = useState("");
   const [tags, setTags] = useState([]);
   const [tagNames, setTagNames] = useState([]);
   const [contents, setContents] = useState("");
-  const [upload, setupload] = useState(false)
-  const [clAss, setClAss] = useState(false);
+  const [upload, setupload] = useState(false);
 
-  useEffect(() => {
-    if (document.cookie) {
-      const exp = document.cookie.split(" ")[1];
-      const result = JSON.parse(atob(exp.split(".")[1]));
-      setemail(result.email);
-      setClAss(result.clAss);
-    }
-  }, []);
+  const exp = document.cookie.split(" ")[1];
+  var result = jwt_decode(exp);
+  const clAss = result.clAss;
+  const email = result.email;
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("image", selectedFile);

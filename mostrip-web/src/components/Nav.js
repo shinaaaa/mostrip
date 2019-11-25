@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import jwt_decode from 'jwt-decode';
 
 export default function Nav({ isLoggedIn, setIsLoggedIn, setClAss }) {
   const [isCollapsed, setisCollapsed] = useState(true);
   const [isMenuOpened, setisMenuOpened] = useState(false);
+  const [clAss, setClAss] = useState(false);
+
   const logout = () => {
     //만료시간을 현재시간으로 변경해서 쿠키를 파괴함.
     document.cookie = `Authorization=;expires=${new Date().toUTCString()}`;
@@ -15,10 +18,8 @@ export default function Nav({ isLoggedIn, setIsLoggedIn, setClAss }) {
       setIsLoggedIn(document.cookie.includes("Authorization"));
       const jwt = document.cookie;
       const token = jwt.split(" ")[1];
-      const { clAss } = JSON.parse(atob(token.split(".")[1]));
-      console.log(clAss);
-      setClAss(clAss);
-
+      const data = jwt_decode(token);
+      setClAss(data.clAss);
     }
   }, []);
   return (
@@ -42,7 +43,7 @@ export default function Nav({ isLoggedIn, setIsLoggedIn, setClAss }) {
                 Home
               </Link>
             </li>
-            {isLoggedIn && setClAss === true ? (
+            {isLoggedIn && clAss === true ? (
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/write" onClick={() => { setisCollapsed(!isCollapsed); setisMenuOpened(!isMenuOpened); }}>
