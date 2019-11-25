@@ -28,6 +28,7 @@ module.exports = () => {
       return passport.initialize();
     },
     authenticate() {
+      console.log("신영찬");
       return passport.authenticate("jwt", config.jwtSession);
     }
   };

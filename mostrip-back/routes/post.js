@@ -35,7 +35,8 @@ router.post(
       like: 0,
       like_user: [],
       date: new Date(),
-      email: req.body.email
+      email: req.body.email,
+      comments: []
     });
     await post.save();
     //여기까지가 포스트만 작성

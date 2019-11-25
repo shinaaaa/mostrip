@@ -9,7 +9,8 @@ const postSchema = new Schema({
   like: Number,
   like_user: [{ type: mongoose.Types.ObjectId, ref: "users" }],
   date: Date,
-  email: String
+  email: String,
+  comments: [{ type: String, ref: "comment" }]
 });
 
 const Post = model("Post", postSchema);
@@ -21,7 +22,8 @@ function validatePost(post) {
     tags: Joi.array().items(Joi.string()),
     like: Joi.number(),
     like_user: Joi.array().items(Joi.string()),
-    date: Joi.date()
+    date: Joi.date(),
+    comments: Joi.array().items(Joi.string())
   });
   return schema.validate(post);
 }
