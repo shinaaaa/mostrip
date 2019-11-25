@@ -9,7 +9,6 @@ export default function Header() {
     if (document.cookie) {
       const exp = document.cookie.split(' ')[1];
       const result = jwt_decode(exp);
-
       setImage(result.image)
     }
   }, [])
