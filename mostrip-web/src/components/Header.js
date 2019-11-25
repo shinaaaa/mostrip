@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { baseURL } from '../config';
+import jwt_decode from 'jwt-decode';
 
 export default function Header() {
   const [image, setImage] = useState(null)
@@ -7,8 +8,8 @@ export default function Header() {
   useEffect(() => {
     if (document.cookie) {
       const exp = document.cookie.split(' ')[1];
-      const result = JSON.parse(atob(exp.split('.')[1]))
-      console.log(result.image);
+      const result = jwt_decode(exp);
+
       setImage(result.image)
     }
   }, [])

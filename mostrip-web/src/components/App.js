@@ -10,6 +10,9 @@ import Mypage from "./Mypage";
 import Write from "./Write";
 import calendar from "./calendar";
 import Nonops from "./Nonops"
+import Map from "./Map";
+import List from './List';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,6 +30,8 @@ function App() {
       <Route path="/mypage" component={Mypage} />
       <Route path="/calendar" component={calendar} />
       <Route path="/Nonops" component={Nonops} />
+      <Route path="/map" component={Map} />
+      <Route path="/list" component={List} />
     </BrowserRouter>
   );
 }

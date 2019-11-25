@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import jwt_decode from 'jwt-decode';
 
 export default function Nav({ isLoggedIn, setIsLoggedIn }) {
   const [isCollapsed, setisCollapsed] = useState(true);
@@ -17,12 +18,8 @@ export default function Nav({ isLoggedIn, setIsLoggedIn }) {
       setIsLoggedIn(document.cookie.includes("Authorization"));
       const jwt = document.cookie;
       const token = jwt.split(" ")[1];
-      const data = JSON.parse(atob(token.split(".")[1]));
-      console.log(data.clAss);
+      const data = jwt_decode(token);
       setClAss(data.clAss);
-      console.log(data.clAss);
-
-
     }
   }, []);
   return (
