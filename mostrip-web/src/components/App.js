@@ -8,10 +8,7 @@ import Header from "./Header";
 import Main from "./Main";
 import Mypage from "./Mypage";
 import Write from "./Write";
-import calendar from "./calendar";
 import Nonops from "./Nonops"
-import Map from "./Map";
-import List from './List';
 
 
 function App() {
@@ -28,10 +25,7 @@ function App() {
       <Route path="/write" component={Write} />
       <Route path="/join" component={Join} />
       <Route path="/mypage" component={Mypage} />
-      <Route path="/calendar" component={calendar} />
       <Route path="/Nonops" component={Nonops} />
-      <Route path="/map" component={Map} />
-      <Route path="/list" component={List} />
     </BrowserRouter>
   );
 }

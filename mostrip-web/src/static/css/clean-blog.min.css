@@ -25,7 +25,8 @@ h6 {
 }
 a {
   color: #212529;
-  transition: all 0.2s;
+	transition: all 0.2s;
+	text-decoration: none;
 }
 a:focus,
 a:hover {
@@ -335,7 +336,7 @@ footer .copyright {
 .btn {
   font-size: 14px;
   font-weight: 800;
-  padding: 15px 25px;
+ /*  padding: 15px 25px; */
   letter-spacing: 1px;
   text-transform: uppercase;
   border-radius: 0;
@@ -343,7 +344,7 @@ footer .copyright {
 }
 .btn-primary {
   background-color: #e65550;
-  border-color: #e65550;
+/*   border-color: #e65550; */
 }
 .btn-primary:active,
 .btn-primary:focus,
@@ -354,7 +355,7 @@ footer .copyright {
 }
 .btn-secondary {
   background-color: #469cff;
-  border-color: #469cff;
+/*   border-color: #469cff; */
 }
 .btn-secondary:active,
 .btn-secondary:focus,
@@ -1778,7 +1779,7 @@ footer .copyright {
 
 	body {
 		background-color: #000;
-		background-image: url("../../bg.jpg");
+		background-image: url("../../bg.png");
 		background-size: cover;
 		background-position: top center;
 	}
@@ -1815,7 +1816,7 @@ footer .copyright {
 	a {
 		color: inherit;
 		text-decoration: none;
-		border-bottom: dotted 1px rgba(255, 255, 255, 0.35);
+		border-bottom: 1px rgba(255, 255, 255, 0.35);
 		-moz-transition: border-bottom-color 0.2s ease-in-out, color 0.2s ease-in-out;
 		-webkit-transition: border-bottom-color 0.2s ease-in-out, color 0.2s ease-in-out;
 		-ms-transition: border-bottom-color 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -2013,7 +2014,7 @@ footer .copyright {
 		display: block;
 		font-size: 0.9em;
 		font-weight: 200;
-		margin: 0 0 1em 0;
+		margin: 0 0 0 0;
 	}
 
 	input[type="text"],
@@ -2962,7 +2963,10 @@ footer .copyright {
 		#header .avatar {
 			border-radius: 100%;
 			display: inline-block;
-			margin: 0 0 2em 0;
+			margin-top: 2em;
+    	margin-right: 0px;
+   		margin-bottom: 1em;
+    	margin-left: 0px;
 			padding: 0.5em;
 			border: solid 1px rgba(255, 255, 255, 0.25);
 			background-color: rgba(255, 255, 255, 0.075);
@@ -2973,6 +2977,7 @@ footer .copyright {
 				display: block;
 				width: 10em;
 				height: 10em;
+				orientation: portrait;
 			}
 
 		@media screen and (max-width: 1280px) {
@@ -3034,7 +3039,10 @@ footer .copyright {
 		#header .avatar {
 			border-radius: 100%;
 			display: inline-block;
-			margin: 0 0 2em 0;
+			margin-top: 2em;
+    	margin-right: 0px;
+   		margin-bottom: 1em;
+    	margin-left: 0px;
 			padding: 0.5em;
 			border: solid 1px rgba(255, 255, 255, 0.25);
 			background-color: rgba(255, 255, 255, 0.075);
@@ -3044,6 +3052,7 @@ footer .copyright {
 				border-radius: 100%;
 				display: block;
 				width: 10em;
+				orientation: portrait;
 			}
 
 		@media screen and (max-width: 1280px) {

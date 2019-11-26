@@ -5,12 +5,12 @@ import { Redirect } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 
 export default function Write() {
-  const [selectedFile, setSelectedFile] = useState("");
   const [tag, setTag] = useState("");
   const [tags, setTags] = useState([]);
   const [tagNames, setTagNames] = useState([]);
   const [contents, setContents] = useState("");
   const [upload, setupload] = useState(false);
+  const [image, setImage] = useState(null)
 
   const exp = document.cookie.split(" ")[1];
   var result = jwt_decode(exp);
@@ -19,9 +19,14 @@ export default function Write() {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    formData.append("image", selectedFile);
+    formData.append("image", image);
     formData.append("contents", contents);
-    formData.append("tags", tags);
+    console.log(tags);
+    if (tags.length === 0) {
+      formData.append("tags", [{}]);
+    } else {
+      formData.append("tags", tags);
+    }
     formData.append("email", email);
 
     const { data } = await axios.post(`${baseURL}/api/post`, formData);
@@ -60,14 +65,24 @@ export default function Write() {
     setTagNames(newTagNames);
   };
 
+  const uploadImage = (e) => {
+    if (e.type === 'image/png' || e.type === 'image/jpeg' || e.type === 'image/jpg') {
+      setImage(e);
+      return
+    } else {
+      alert('이미지 형식만 가능합니다.');
+      return
+    }
+  }
+
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column", padding: '20px' }}>
       {document.cookie ? null : <Redirect to="/Login" />}
       {clAss ? null : <Redirect to='/' />}
       {upload ? <Redirect to='/' /> : null}
       <label>태그 추가</label>
       <input type="text" value={tag} onChange={e => setTag(e.target.value)} />
-      <button type="button" className="btn btn-success" onClick={addTag}>
+      <button type="button" className="btn btn-success" onClick={addTag} style={{ marginBottom: '20px ' }}>
         태그 추가
       </button>
 
@@ -91,13 +106,12 @@ export default function Write() {
       />
 
       <div>
-        <input
-          type="file"
-          name="file"
-          onChange={e => {
-            setSelectedFile(e.target.files[0]);
-          }}
-        />
+
+        <div className="custom-file" style={{ marginTop: '20px' }}>
+          <input type="file" name="file" className="custom-file-input" id="validatedCustomFile"
+            onChange={e => uploadImage(e.target.files[0])} required />
+          <label className="custom-file-label" for="validatedCustomFile" data-browse="Image File">{image ? image.name : 'Choose file...'}</label>
+        </div>
         <button
           type="button"
           className="btn btn-secondary"
