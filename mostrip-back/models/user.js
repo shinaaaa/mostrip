@@ -10,6 +10,7 @@ const userSchema = new Schema({
   admin: { type: Boolean, default: false },
   image: String,
   clAss: Boolean,
+  date: Date,
   like: Number,
   like_user: [{ type: mongoose.Types.ObjectId, ref: "users" }]
 });
