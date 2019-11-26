@@ -41,12 +41,12 @@ router.post(
     await post.save();
     //여기까지가 포스트만 작성
     //이제부터는 tag에다가 업데이트!
-    for (const tag_id of tags.split(",")) {
-      console.log(tag_id);
-      const tag = await Tag.findById(tag_id);
-      tag.posts.push(post._id);
-      await tag.save();
-    }
+    // for (const tag_id of tags.split(",")) {
+    //   console.log(tag_id);
+    //   const tag = await Tag.findById(tag_id);
+    //   tag.posts.push(post._id);
+    //   await tag.save();
+    // }
     res.json({ result: true });
     next();
   })

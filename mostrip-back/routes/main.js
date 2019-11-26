@@ -12,6 +12,7 @@ router.get(
     const img = await Post.find()
       .select("image")
       .select("comments")
+      .select("contents")
       .limit(skip)
       .sort("-date");
     console.log(img);

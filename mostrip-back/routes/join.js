@@ -41,7 +41,8 @@ router.post(
       password: hashedPW,
       clAss: false,
       like: 0,
-      like_user: []
+      like_user: [],
+      date: new Date()
     });
     const saveResult = await user.save();
     res.json({ result: true });

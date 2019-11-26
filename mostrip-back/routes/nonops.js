@@ -9,7 +9,7 @@ router.get(
   wrapper(async (req, res, next) => {
     let skip = req.query.page * 5;
     console.log("skip:", skip);
-    const img = await User.find()
+    const img = await User.find({ clAss: false })
       .select("image")
       .limit(skip)
       .sort("-date");
