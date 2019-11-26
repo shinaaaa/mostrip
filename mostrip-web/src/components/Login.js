@@ -7,7 +7,7 @@ import jwt_decode from 'jwt-decode';
 import Joi from '@hapi/joi';
 
 
-export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
+export default function Login({ history }) {
   const [loginState, setLoginState] = useState('init');
 
   const validate = (user) => {

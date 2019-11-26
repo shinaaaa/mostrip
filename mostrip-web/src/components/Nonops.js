@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { baseURL } from './../config';
+import { Redirect } from 'react-router-dom';
 import './../css/main.css'
 import 'mdbootstrap/css/mdb.min.css';
+import Img from "react-exif-orientation-img";
+import jwt_decode from 'jwt-decode';
 
 
 export default function Nonops() {
@@ -11,6 +14,9 @@ export default function Nonops() {
   const [onClickLike, setOnClickLike] = useState(false);
   const [page, setPage] = useState(1);
   const [nextbtn, setNextbtn] = useState(true);
+  const jwt = document.cookie;
+  const token = jwt.split(" ")[1];
+  const { clAss } = jwt_decode(token);
 
   const handle = async () => {
     const { data } = await axios.get(`${baseURL}/api/nonops?page=${page}`);
@@ -28,15 +34,11 @@ export default function Nonops() {
     const jwt = document.cookie;
     const token = jwt.split(" ")[1];
     const userData = JSON.parse(atob(token.split(".")[1]));
-    console.log(userData);
-
     const { data } = await axios.post(`${baseURL}/api/nonops_like`, {
       _id: e,
       email: userData._id
     });
     if (data.result) {
-      console.log(data.result);
-
       setPost_id(e);
       setOnClickLike(data.result);
       setTimeout(() => {
@@ -44,7 +46,6 @@ export default function Nonops() {
         setOnClickLike(false);
       }, 1000);
     } else {
-      console.log(data.result);
       setOnClickLike(data.result);
       alert('취소되었습니다.');
     }
@@ -62,19 +63,22 @@ export default function Nonops() {
 
   return (
     <div className='flex'>
+      {clAss ? null : <Redirect to='/' />}
       <header className="masthead">
         <div >
           {posts.map((post, i) => (
             <div key={i} className="image-size">
-              <img id={post._id}
-                className={onClickLike && post_id === post._id ? 'animated heartBeat slow' : null}
-                src={onClickLike && post_id === post._id ? `../images/like.png` : `${baseURL}/${post.image}`}
-                alt=""
-                onClick={document.cookie ? e => onClickPost(e.target.id) : null} />
+              <div className='image-box'>
+                <Img id={post._id}
+                  className={onClickLike && post_id === post._id ? 'animated heartBeat slow' : null}
+                  src={onClickLike && post_id === post._id ? `../images/like.png` : `${baseURL}/${post.image}`}
+                  alt=""
+                  onClick={document.cookie ? e => onClickPost(e.target.id) : null} />
+              </div>
             </div>
           ))}
         </div>
-        {nextbtn ? <button type="button" class="btn btn-primary btn-lg btn-block" onClick={e => NextPage()}> 더보기</button> : null}
+        {nextbtn ? <button type="button" className="btn btn-primary btn-block" onClick={e => NextPage()}> 더보기</button> : null}
       </header>
     </div>
   );
