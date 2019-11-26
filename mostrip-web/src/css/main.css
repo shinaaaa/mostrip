@@ -6,16 +6,21 @@
   border-radius: 10px;
   background-color: rgba(26, 24, 24, 0.09);
   box-shadow: 10px 10px 5px rgba(26, 24, 24, 0.7);
-  orientation: portrait;
 }
-.image-size img {
+.image-box img {
   max-width: 300px;
   max-height: 300px;
   min-width: 300px;
   min-height: 300px;
   border-radius: 10px;
   margin-bottom: 10px;
-  orientation: portrait;
+}
+.text-box {
+  background-color: rgba(26, 24, 24, 0.09);
+  border-radius: 10px;
+  padding-left: 15px;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 .flex {
   display: flex;

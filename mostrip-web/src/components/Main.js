@@ -4,6 +4,8 @@ import { baseURL } from './../config';
 import './../css/main.css'
 import 'mdbootstrap/css/mdb.min.css';
 import jwt_decode from 'jwt-decode';
+import Img from "react-exif-orientation-img";
+
 
 
 export default function Main() {
@@ -19,7 +21,7 @@ export default function Main() {
 
   const handle = async () => {
     const { data } = await axios.get(`${baseURL}/api/main?page=${page}`);
-    console.log(data)
+    setIsLoading(false)
     if (data) {
       setPosts(data.result);
     }
@@ -82,65 +84,71 @@ export default function Main() {
   return (
     <div className="flex">
       <header className="masthead">
-        <div>
-          {posts.map((post, i) => (
-            <div key={i} className="image-size">
-              <img
-                id={post._id}
-                className={
-                  onClickLike && post_id === post._id
-                    ? "animated heartBeat slow"
-                    : null
-                }
-                src={
-                  onClickLike && post_id === post._id
-                    ? `../images/like.png`
-                    : `${baseURL}/${post.image}`
-                }
-                alt=""
-                onClick={document.cookie ? e => onClickPost(e.target.id) : null}
-              />
-              <>
-                <br />
-                <i
-                  className="far fa-comment fa-2x white-text"
-                  onClick={e =>
-                    onClickComment(post._id)
-                  }
-                ></i>
-                {post.comments.map(e => (
-                  <div style={{ color: "white" }}>{e}</div>
-                ))}
-              </>
-              {commentFlag && commentID === post._id ? (
-                <div>
-                  <input
-                    type="text"
-                    style={{ color: "black" }}
-                    value={comment}
-                    onChange={e => setComment(e.target.value)}
-                  ></input>
-                  <button
-                    className="btn"
-                    onClick={() => submitComment(post._id)}
-                  >
-                    게시
+        {isLoading ?
+          (<i className="fas fa-spinner fa-spin fa-5x"></i>) :
+          (
+            <div>
+              {posts.map((post, i) => (
+                <div key={i} className="image-size">
+                  <div className='image-box'>
+                    <Img
+                      id={post._id}
+                      className={
+                        onClickLike && post_id === post._id
+                          ? "animated heartBeat slow"
+                          : null
+                      }
+                      src={
+                        onClickLike && post_id === post._id
+                          ? `../images/like.png`
+                          : `${baseURL}/${post.image}`
+                      }
+                      alt=""
+                      onClick={document.cookie ? e => onClickPost(e.target.id) : null}
+                    />
+                  </div>
+                  <div className='text-box'>
+                    <div style={{ color: "white" }}>{post.contents}</div>
+                    <i
+                      className="far fa-comment fa-2x white-text"
+                      onClick={e =>
+                        onClickComment(post._id)
+                      }
+                    ></i>
+                    {post.comments.map((e, i) => (
+                      <div key={i} style={{ color: "white" }}>{e}</div>
+                    ))}
+                  </div>
+                  {commentFlag && commentID === post._id ? (
+                    <div>
+                      <input
+                        type="text"
+                        style={{ color: "black" }}
+                        value={comment}
+                        onChange={e => setComment(e.target.value)}
+                      ></input>
+                      <button
+                        className="btn"
+                        onClick={() => submitComment(post._id)}
+                      >
+                        게시
                   </button>
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
+              ))}
             </div>
-          ))}
-        </div>
-        {nextbtn ? (
-          <button
-            type="button"
-            class="btn btn-primary btn-block"
-            onClick={e => NextPage()}
-          >
-            {" "}
-            더보기
+          )} {
+          nextbtn ? (
+            <button
+              type="button"
+              className="btn btn-primary btn-block"
+              onClick={e => NextPage()}
+            >
+              {" "}
+              더보기
           </button>
-        ) : null}
+          ) : null}
       </header>
     </div >
   );
