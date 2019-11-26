@@ -14,10 +14,12 @@ export default function Main() {
   const [nextbtn, setNextbtn] = useState(true);
   const [comment, setComment] = useState("");
   const [commentFlag, setCommentFlag] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [commentID, setCommentID] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
   const handle = async () => {
     const { data } = await axios.get(`${baseURL}/api/main?page=${page}`);
+    console.log(data)
     if (data) {
       setPosts(data.result);
     }
@@ -28,19 +30,17 @@ export default function Main() {
     handle();
   }, []);
 
-  const submitComment = async post_id => {
-    setIsLoading(true);
+  const submitComment = async el => {
     const jwt = document.cookie;
     const token = jwt.split(" ")[1];
     const { email } = jwt_decode(token);
     const res = await axios.post(`${baseURL}/api/comment`, {
       email: email,
       contents: comment,
-      post_id
+      post_id: el
     });
-    setIsLoading(false);
-    console.log(res);
     setComment("");
+    window.location.reload();
   };
 
   const onClickPost = async e => {
@@ -74,6 +74,11 @@ export default function Main() {
     }
   };
 
+  const onClickComment = (e) => {
+    setCommentID(e)
+    setCommentFlag(!commentFlag)
+  }
+
   return (
     <div className="flex">
       <header className="masthead">
@@ -95,22 +100,19 @@ export default function Main() {
                 alt=""
                 onClick={document.cookie ? e => onClickPost(e.target.id) : null}
               />
-              <br />
-              <div></div>
-              <div style={{ color: "white" }}>chan8149 너무 좋아요</div>
-              {isLoading ? (
-                <i class="fas fa-star-christmas fa-spin"></i>
-              ) : (
-                  <i
-                    class="fas fa-comment fa-1x"
-                    onClick={() => setCommentFlag(!commentFlag)}
-                  ></i>
-                )}
-              {/* <img
-                src="/../../images/comment.png"
-                onClick={() => setCommentFlag(!commentFlag)}
-              ></img> */}
-              {commentFlag ? (
+              <>
+                <br />
+                <i
+                  className="far fa-comment fa-2x white-text"
+                  onClick={e =>
+                    onClickComment(post._id)
+                  }
+                ></i>
+                {post.comments.map(e => (
+                  <div style={{ color: "white" }}>{e}</div>
+                ))}
+              </>
+              {commentFlag && commentID === post._id ? (
                 <div>
                   <input
                     type="text"
@@ -132,7 +134,7 @@ export default function Main() {
         {nextbtn ? (
           <button
             type="button"
-            class="btn btn-primary btn-lg btn-block"
+            class="btn btn-primary btn-block"
             onClick={e => NextPage()}
           >
             {" "}
@@ -140,6 +142,6 @@ export default function Main() {
           </button>
         ) : null}
       </header>
-    </div>
+    </div >
   );
 }

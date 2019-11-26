@@ -4,12 +4,28 @@ import { Redirect } from 'react-router-dom';
 import { baseURL } from './../config';
 import "./../css/Login.css";
 import jwt_decode from 'jwt-decode';
+import Joi from '@hapi/joi';
+
 
 export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
   const [loginState, setLoginState] = useState('init');
+
+  const validate = (user) => {
+    const emailValidate = Joi.object({
+      email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+    })
+    return emailValidate.validate(user);
+  }
+
+
   /* 로그인 버튼 클릭 시 실행 */
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const email = e.target.email.value;
+    if (validate({ email }).error) {
+      alert('올바른 이메일 형식이 아닙니다.');
+      return;
+    }
     const { data } = await axios.post(`${baseURL}/auth/login`, {
       email: e.target.email.value,
       password: e.target.password.value,
@@ -30,7 +46,7 @@ export default function Login({ setIsLoggedIn, setIsAdmin, history }) {
       {document.cookie ? <Redirect to='/' /> : null}
       {loginState === 'success' ? (window.location.replace('/')) : null}
       <form className='form-row' onSubmit={handleSubmit}>
-        {loginState === 'failed' ? '이메일 혹은 비밀번호를 추가해 주세요' : null}
+        {loginState === 'failed' ? '이메일 혹은 비밀번호가 틀렸습니다.' : null}
         <div className="form-group">
           <label for="exampleInputEmail1">Email address</label>
           <input type="email" name='email' className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />

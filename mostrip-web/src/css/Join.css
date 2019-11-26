@@ -5,4 +5,9 @@
 .form-row {
   display: flex;
   flex-direction: column;
+  max-width: 350px;
+  min-width: 350px;
+}
+.custom-file {
+  margin-bottom: 10px;
 }

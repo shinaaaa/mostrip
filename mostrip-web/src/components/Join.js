@@ -3,6 +3,7 @@ import axois from 'axios';
 import { Redirect } from 'react-router-dom';
 import { baseURL } from '../config';
 import "./../css/Join.css";
+import Joi from '@hapi/joi';
 
 export default function Join() {
     const [name, setName] = useState('');
@@ -12,19 +13,36 @@ export default function Join() {
     const [isEmailChecked, setIsEmailChecked] = useState('yet');
     const [isPasswordSame, setIsPasswordSame] = useState(false);
     const [joinResult, setJoinResult] = useState(false);
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState(null);
+
+    const validate = (user) => {
+        const emailValidate = Joi.object({
+            email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        })
+        return emailValidate.validate(user);
+    }
 
     const checkEmail = async () => {
+        if (email === '') {
+            alert('이메일을 입력해주세요.');
+            return;
+        }
+
+        if (validate({ email }).error) {
+            alert('올바른 이메일 형식이 아님니다.');
+            return;
+        }
+
         const { data } = await axois.get(`${baseURL}/auth/email?email=${email}`);
         setIsEmailChecked(data.result);
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isEmailChecked || isEmailChecked === 'yet') {
-            alert('이메일 중복을 확인하세요');
+            alert('이메일 중복을 확인하세요.');
             return;
         }
-        if (!e.target.name.value || !email || !password) {
+        if (!e.target.name.value || email === '' || password === '' || name === '' || password2 === '') {
             alert('모든 값을 입력해주세요');
             return;
         }
@@ -46,12 +64,19 @@ export default function Join() {
     const uploadImage = (e) => {
         if (e.type === 'image/png' || e.type === 'image/jpeg' || e.type === 'image/jpg') {
             setImage(e);
+            console.log(e);
+
+
+
+
+
             return
         } else {
             alert('이미지 형식만 가능합니다.');
             return
         }
     }
+
     return (
         <div className='div-box'>
             {document.cookie ? <Redirect to='/' /> : null}
@@ -65,7 +90,7 @@ export default function Join() {
                 <div className="form-group">
                     <label>Name</label>
                     <input type="text" name='name' className="form-control" placeholder="Name" value={name}
-                        onChange={e => { setName(e.target.value) }} />
+                        onChange={e => { setName(e.target.value) }} required />
                 </div>
                 <div className="form-group">
                     <label>Email address</label>
@@ -73,10 +98,10 @@ export default function Join() {
                         onChange={e => {
                             setIsEmailChecked("yet");
                             setEmail(e.target.value);
-                        }}
+                        }} required
                     />
                     <button type="button" className="btn btn-primary" onClick={checkEmail}>Check</button>
-                    {isEmailChecked === 'yet' ? 'Check for the availability of the email.' : isEmailChecked ? 'This email is available. Do you wish to use it?' : 'This email is already in use.'}
+                    {isEmailChecked === 'yet' ? '중복확인 버튼을 클릭해 주세요.' : isEmailChecked ? '사용 가능한 이메일입니다.' : '이미 사용 중인 이메일입니다.'}
                 </div>
                 <div className="form-group">
                     <label>password</label>
@@ -84,7 +109,7 @@ export default function Join() {
                         onChange={e => {
                             setPassword(e.target.value);
                             setIsPasswordSame(e.target.value === password2);
-                        }}
+                        }} required
                     />
                 </div>
                 <div className="form-group">
@@ -96,7 +121,7 @@ export default function Join() {
                         }}
                     />
                 </div>
-                <small>{isPasswordSame ? null : 'The passowrd does not match. Try again.'}</small>
+                <small>{isPasswordSame ? null : '비밀번호가 동일하지 않습니다.'}</small>
                 <button type="submit" className="btn btn-primary">Join</button>
             </form>
         </div >
