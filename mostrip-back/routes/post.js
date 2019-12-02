@@ -26,7 +26,7 @@ router.post(
     console.log(req.body);
     console.log(JSON.stringify(req.body.tags));
 
-    const { image, contents, tags } = req.body;
+    const { image, contents, tags, email } = req.body;
 
     const post = new Post({
       image: req.file.filename,
@@ -34,17 +34,19 @@ router.post(
       tags: tags.split(","),
       like: 0,
       like_user: [],
-      date: new Date()
+      date: new Date(),
+      email: req.body.email,
+      comments: []
     });
     await post.save();
     //여기까지가 포스트만 작성
     //이제부터는 tag에다가 업데이트!
-    for (const tag_id of tags.split(",")) {
-      console.log(tag_id);
-      const tag = await Tag.findById(tag_id);
-      tag.posts.push(post._id);
-      await tag.save();
-    }
+    // for (const tag_id of tags.split(",")) {
+    //   console.log(tag_id);
+    //   const tag = await Tag.findById(tag_id);
+    //   tag.posts.push(post._id);
+    //   await tag.save();
+    // }
     res.json({ result: true });
     next();
   })
@@ -115,4 +117,12 @@ router.delete(
     next();
   })
 );
+
+router.post(
+  "/:comment",
+  wrapper(async (req, res, next) => {
+    res.sender("엠레찬님 코멘트");
+  })
+);
+
 module.exports = router;

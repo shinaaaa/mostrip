@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const bcrypt = require("bcrypt");
-const { Post, validatePost } = require("../models/post");
+const { User, validateUser } = require("../models/user");
 const wrapper = require("../common/wrapper");
 
 router.get(
@@ -9,13 +9,11 @@ router.get(
   wrapper(async (req, res, next) => {
     let skip = req.query.page * 5;
     console.log("skip:", skip);
-    const img = await Post.find()
+    const img = await User.find({ clAss: false })
       .select("image")
-      .select("comments")
-      .select("contents")
       .limit(skip)
       .sort("-date");
-    console.log(img);
+    // console.log(img);
     console.log("length:", img.length);
     if (skip > img.length + 5) {
       res.json({ result: false });
@@ -35,9 +33,8 @@ router.get(
     console.log(req.page);
     let skip = parseInt(req.query.page) * 5;
     console.log(skip);
-    const img = await Post.find()
+    const img = await User.find()
       .select("image")
-      .select("comments")
       .limit(skip)
       .sort("-date");
     console.log(img);

@@ -8,41 +8,35 @@ const wrapper = require("../common/wrapper");
 router.post(
   "/",
   wrapper(async (req, res, next) => {
-    let cnt = 0;
-    let id = req.body._id;
-
-    const img = await Post.findOne({ _id: id });
-
     let email = req.body.email;
     console.log(email);
 
-    const user = await User.findOne({ email: img.email });
+    let _id = req.body._id;
+    const user = await User.findOne({ _id: _id });
     console.log(user._id);
 
-    img.like_user.indexOf(email);
-    const index = img.like_user.indexOf(user._id);
-    console.log(index);
+    const index = user.like_user.indexOf(email);
+    console.log("안냥 : ", index);
 
-    if (img.like_user.indexOf(user._id) == "-1") {
-      console.log(user);
-      console.log("-------------", user.clAss);
-      img.like_user.push(user._id);
-      img.like = img.like + 1;
-      if (img.like >= 5) {
+    if (index == "-1") {
+      user.like_user.push(email);
+      user.like = user.like + 1;
+      if (user.like >= 5) {
         user.clAss = true;
       }
       console.log("좋아유");
-      console.log(user.clAss);
+      console.log("index : ", user);
+      console.log("-------------", user.clAss);
 
-      await img.save();
       await user.save();
       res.send({ result: true });
     } else {
       // const newTags = [...img.like_user];
-      img.like_user.splice(index, 1);
-      img.like = img.like - 1;
-      await img.save();
+      user.like_user.splice(index, 1);
+      user.like = user.like - 1;
+      await user.save();
       console.log("안좋아유");
+      console.log("unlike : ", user);
       res.send({ result: false });
     }
   })

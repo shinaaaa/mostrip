@@ -18,6 +18,9 @@ const tagRouter = require("./routes/tag");
 const mainRouter = require("./routes/main");
 const likeRouter = require("./routes/like");
 const mypageRouter = require("./routes/mypage");
+const nonopsRouter = require("./routes/nonops");
+const nonops_likeRouter = require("./routes/nonops_like");
+const commentRouter = require("./routes/comment");
 
 var app = express();
 
@@ -59,6 +62,9 @@ app.use("/api/tag", tagRouter);
 app.use("/api/main", mainRouter);
 app.use("/api/like", likeRouter);
 app.use("/auth/mypage", mypageRouter);
+app.use("/api/nonops", nonopsRouter);
+app.use("/api/nonops_like", nonops_likeRouter);
+app.use("/api/comment", commentRouter);
 
 // 이것까지 실행해야 하기 때문에 위에서 next를 써줘야한다. 그래야 여기까지 실행함.
 app.use(() => mongoose.disconnect());
